@@ -19,10 +19,11 @@ Resolves a GitHub issue from start to finish.
 3. `/speckit.specify $INPUT` — creates branch + spec.md
 4. `/speckit.plan` — creates plan.md
 5. `/speckit.tasks` — creates tasks.md
-6. `/speckit.implement` — implements each task, commit after each one
+6. `/speckit.implement` — implements each task, **do NOT commit**
 7. `bundle exec rspec $(git diff master..HEAD --name-only | grep '_spec\.rb' | tr '\n' ' ') --format progress 2>&1 | tail -15`
 8. `git diff master..HEAD --name-only --diff-filter=AM | grep '\.rb$' | xargs bundle exec rubocop --auto-correct 2>&1 | tail -10`
-9. Report: title, branch, tasks N/N, tests → "Ready for @merger"
+9. Show `git diff` summary and **pause — wait for user approval before committing**
+10. On approval: `git add -p` (stage only relevant files) → `git commit -m "fix: <description>"` → Report: title, branch, tasks N/N, tests → "Ready for @merger"
 
 ## Lexgo Rules
 - Queries: always `current_enterprise.models.find(params[:id])`, never `Model.find(...)`

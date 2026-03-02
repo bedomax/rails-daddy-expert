@@ -39,13 +39,31 @@ bash /tmp/lcs/install.sh
 ```bash
 # Resolve a GitHub issue
 @issuer 1350
+# → agent implements, runs tests, shows git diff, pauses for your review
+# → you review the code and say "ok" / "approved"
+# → agent commits and reports "Ready for @merger"
 @merger
 
 # New feature from issue or description
 @maker 1350
 @maker "add signer message to bulk signature"
+# → agent implements, runs tests, shows git diff, pauses for your review
+# → you review the code and say "ok" / "approved"
+# → agent commits and reports "Ready for @merger"
 @merger
 ```
+
+## Commit approval flow
+
+`@issuer` and `@maker` never commit automatically. The flow is:
+
+1. Agent implements all changes
+2. Runs `rspec` and `rubocop`
+3. Shows a `git diff` summary
+4. **Pauses and waits for your explicit approval**
+5. On approval → stages relevant files (`git add -p`) → commits
+
+This ensures you always review code before it enters git history.
 
 ## How each agent uses Devin
 
