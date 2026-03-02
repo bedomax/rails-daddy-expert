@@ -1,53 +1,53 @@
 # lexgo-claude-setup
 
-Claude Code agents y skills personales para proyectos Rails/Lexgo.
+Personal Claude Code agents and skills for Rails/Lexgo projects.
 
-## Instalación
+## Installation
 
-En la raíz de cualquier proyecto Rails:
+From the root of any Rails project:
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/bedomax/lexgo-claude-setup/main/install.sh)
 ```
 
-O clonando:
+Or by cloning:
 
 ```bash
 git clone git@github.com:bedomax/lexgo-claude-setup.git /tmp/lcs
 bash /tmp/lcs/install.sh
 ```
 
-## Agentes
+## Agents
 
-| Agente | Comando | Para qué |
-|--------|---------|----------|
-| 🔴 issuer | `@issuer 1234` | Resolver un issue de GitHub de punta a punta |
-| 🔵 maker | `@maker "descripción"` | Implementar feature nueva sin issue |
-| 🟢 merger | `@merger` | Validar branch y generar PR |
+| Agent | Command | When to use |
+|-------|---------|-------------|
+| 🔴 issuer | `@issuer 1234` | Resolve a GitHub issue end-to-end |
+| 🔵 maker | `@maker "description"` | Implement a new feature without an issue |
+| 🟢 merger | `@merger` | Validate branch and generate PR |
 
 ## Skills
 
-| Skill | Comando | Para qué |
-|-------|---------|----------|
-| solve-issue | `/solve-issue 1234` | Flujo completo desde issue |
-| add-feat | `/add-feat "descripción"` | Feature sin issue, paso a paso |
-| validate-branch | `/validate-branch` | Validar branch antes del PR |
-| rails-expert | automático | Se activa con Rails, ActiveRecord, Hotwire |
+| Skill | Command | When to use |
+|-------|---------|-------------|
+| solve-issue | `/solve-issue 1234` | Full flow from a GitHub issue |
+| add-feat | `/add-feat "description"` | Feature without issue, step by step |
+| validate-branch | `/validate-branch` | Validate branch before opening PR |
+| rails-expert | automatic | Activates on Rails, ActiveRecord, Hotwire keywords |
 
-## Flujo típico
+## Typical flow
 
-```
-# Resolver un issue
+```bash
+# Resolve an issue
 @issuer 1350
 @merger
 
-# Feature nueva
-@maker "agregar X"
+# New feature
+@maker "add X to Y"
 @merger
 ```
 
-## Requisitos
+## Requirements
 
-- Claude Code con MCP de Devin configurado (`Lexgo-cl/rails-backend`)
-- `gh` CLI autenticado
-- Proyecto Rails con `bundle exec rspec` y `rubocop` disponibles
+- Claude Code with Devin MCP configured (`Lexgo-cl/rails-backend`)
+- `gh` CLI authenticated
+- Rails project with `bundle exec rspec` and `rubocop` available
