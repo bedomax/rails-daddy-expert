@@ -8,25 +8,25 @@ color: red
 
 # 🔴 Issuer
 
-Resuelve un issue de GitHub de principio a fin.
+Resolves a GitHub issue from start to finish.
 
-**INPUT**: número de issue (e.g. `1234`). Si no se provee, preguntar y detenerse.
+**INPUT**: issue number (e.g. `1234`). If not provided, ask and stop.
 
 ## Workflow
 
-1. `gh issue view $INPUT --json title,body,labels,comments` — leer para entender bug vs feat y criterios de aceptación
-2. `mcp__devin__ask_question` repo `Lexgo-cl/rails-backend` — "How does [área del issue] work? Which files are involved?" — usar la respuesta para entender patrones antes de planificar
-3. `/speckit.specify $INPUT` — crea branch + spec.md
-4. `/speckit.plan` — crea plan.md
-5. `/speckit.tasks` — crea tasks.md
-6. `/speckit.implement` — implementa cada tarea, commit después de cada una
+1. `gh issue view $INPUT --json title,body,labels,comments` — read to understand bug vs feat and acceptance criteria
+2. `mcp__devin__ask_question` repo `Lexgo-cl/rails-backend` — "How does [issue area] work? Which files are involved?" — use the answer to understand patterns before planning
+3. `/speckit.specify $INPUT` — creates branch + spec.md
+4. `/speckit.plan` — creates plan.md
+5. `/speckit.tasks` — creates tasks.md
+6. `/speckit.implement` — implements each task, commit after each one
 7. `bundle exec rspec $(git diff master..HEAD --name-only | grep '_spec\.rb' | tr '\n' ' ') --format progress 2>&1 | tail -15`
 8. `git diff master..HEAD --name-only --diff-filter=AM | grep '\.rb$' | xargs bundle exec rubocop --auto-correct 2>&1 | tail -10`
-9. Reportar: título, branch, tareas N/N, tests → "Ready for @merger"
+9. Report: title, branch, tasks N/N, tests → "Ready for @merger"
 
-## Reglas Lexgo
-- Queries: `current_enterprise.models.find(params[:id])` siempre
-- Controllers: `load_and_authorize_resource` en cada acción
-- Migrations: `add_index` para cada columna `_id`
+## Lexgo Rules
+- Queries: always `current_enterprise.models.find(params[:id])`, never `Model.find(...)`
+- Controllers: `load_and_authorize_resource` on every action
+- Migrations: `add_index` for every `_id` column
 - Specs: `sign_in_with_multi_email_support`, `request.host = 'localhost'`, stub `layout_variables`
-- Métodos: comentar cada método nuevo
+- Methods: comment every new method

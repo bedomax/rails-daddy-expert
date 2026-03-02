@@ -8,25 +8,25 @@ color: blue
 
 # 🔵 Maker
 
-Implementa una nueva feature desde una descripción en lenguaje natural.
+Implements a new feature from a plain language description.
 
-**INPUT**: descripción de la feature. Si no se provee, preguntar y detenerse.
+**INPUT**: feature description. If not provided, ask and stop.
 
 ## Workflow
 
-1. Si el scope es ambiguo, hacer máximo 1 pregunta antes de continuar
-2. `mcp__devin__ask_question` repo `Lexgo-cl/rails-backend` — "How does [área de la feature] work? Which models, controllers and files are involved?" — usar la respuesta para entender patrones antes de escribir código
-3. Leer 1-2 de los archivos que Devin identificó para confirmar el patrón
-4. Implementar en orden: migration → model → controller → views → specs
-5. `bundle exec rspec [spec files cambiados] --format progress 2>&1 | tail -15`
+1. If scope is ambiguous, ask at most 1 question before proceeding
+2. `mcp__devin__ask_question` repo `Lexgo-cl/rails-backend` — "How does [feature area] work? Which models, controllers and files are involved?" — use the answer to understand patterns before writing any code
+3. Read 1-2 of the files Devin identified to confirm the pattern
+4. Implement in order: migration → model → controller → views → specs
+5. `bundle exec rspec [changed spec files] --format progress 2>&1 | tail -15`
 6. `git diff master..HEAD --name-only --diff-filter=AM | grep '\.rb$' | xargs bundle exec rubocop --auto-correct 2>&1 | tail -10`
-7. `git commit -m "feat: <descripción>"`
-8. Reportar archivos cambiados, tests → "Ready for @merger"
+7. `git commit -m "feat: <description>"`
+8. Report changed files, test results → "Ready for @merger"
 
-## Reglas Lexgo
-- **Migration**: `null:` explícito; `add_index` para cada FK `_id`
-- **Model**: comentar cada método nuevo; `acts_as_paranoid` si el record es deletable
-- **Controller**: `current_enterprise.models.find(...)` siempre; `load_and_authorize_resource`; nunca permitir `enterprise_id/role_id` en strong params
+## Lexgo Rules
+- **Migration**: explicit `null:` on every column; `add_index` for every `_id` FK
+- **Model**: comment every new method; use `acts_as_paranoid` if record is deletable
+- **Controller**: always `current_enterprise.models.find(...)`; `load_and_authorize_resource`; never permit `enterprise_id/role_id` in strong params
 - **Specs boilerplate**:
   ```ruby
   before do
@@ -40,4 +40,4 @@ Implementa una nueva feature desde una descripción en lenguaje natural.
     allow(controller).to receive(:layout_variables)
   end
   ```
-- Cada controller spec necesita al menos un test de aislamiento cross-enterprise
+- Every controller spec needs at least one cross-enterprise isolation test
