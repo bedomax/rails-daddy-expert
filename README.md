@@ -19,32 +19,39 @@ bash /tmp/lcs/install.sh
 
 ## Agents
 
-| Agent | Command | When to use |
-|-------|---------|-------------|
-| 🔴 issuer | `@issuer 1234` | Resolve a GitHub issue end-to-end |
-| 🔵 maker | `@maker "description"` | Implement a new feature without an issue |
-| 🟢 merger | `@merger` | Validate branch and generate PR |
+| Agent | Command | Input | When to use |
+|-------|---------|-------|-------------|
+| 🔴 `issuer` | `@issuer 1234` | Issue number | Resolve a GitHub issue end-to-end via speckit (spec → plan → tasks → implement) |
+| 🔵 `maker` | `@maker 1234` or `@maker "add X"` | Issue number **or** plain description | Implement a feature directly — skips speckit overhead |
+| 🟢 `merger` | `@merger` | None | Validate branch and generate PR — always the last step |
 
 ## Skills
 
 | Skill | Command | When to use |
 |-------|---------|-------------|
-| solve-issue | `/solve-issue 1234` | Full flow from a GitHub issue |
-| add-feat | `/add-feat "description"` | Feature without issue, step by step |
-| validate-branch | `/validate-branch` | Validate branch before opening PR |
-| rails-expert | automatic | Activates on Rails, ActiveRecord, Hotwire keywords |
+| `solve-issue` | `/solve-issue 1234` | Same as `@issuer` but as a skill |
+| `add-feat` | `/add-feat "description"` | Same as `@maker` but step by step |
+| `validate-branch` | `/validate-branch` | Same as `@merger` but manual |
+| `rails-expert` | automatic | Activates on Rails, ActiveRecord, Hotwire keywords |
 
-## Typical flow
+## Typical flows
 
 ```bash
-# Resolve an issue
+# Resolve a GitHub issue
 @issuer 1350
 @merger
 
-# New feature
-@maker "add X to Y"
+# New feature from issue or description
+@maker 1350
+@maker "add signer message to bulk signature"
 @merger
 ```
+
+## How each agent uses Devin
+
+Every agent queries `mcp__devin__ask_question` on `Lexgo-cl/rails-backend` before writing code:
+- **issuer / maker** — asks how the affected area works and which files are involved
+- **merger** — asks what the security and data isolation risks are for the changed files
 
 ## Requirements
 
