@@ -56,11 +56,120 @@ bash /tmp/rcs/install.sh
 
 ## Agents
 
-| Agent | Command | Input | When to use |
-|-------|---------|-------|-------------|
-| 🔴 `issuer` | `@issuer 1234` | Issue number | Resolve a GitHub issue end-to-end via speckit (spec → plan → tasks → implement) |
-| 🔵 `maker` | `@maker 1234` or `@maker "add X"` | Issue number **or** plain description | Implement a feature directly — skips speckit overhead |
-| 🟢 `merger` | `@merger` | None | Validate branch and generate PR — always the last step |
+### 🔴 Issuer — `@issuer 1234`
+> For bug fixes and issue-driven work. Follows the full speckit cycle.
+
+```
+  GitHub Issue #1234
+        │
+        ▼
+  📖 Read issue  ──► understand bug vs feat, acceptance criteria
+        │
+        ▼
+  🧠 Query Devin ──► "How does this area work? Which files?"
+        │            (grounded in YOUR codebase, not generic Rails)
+        ▼
+  📄 spec.md     ──► what needs to be built / fixed
+  🗺️  plan.md     ──► approach and file changes
+  ✅ tasks.md    ──► step-by-step checklist
+        │
+        ▼
+  ⚙️  Implement   ──► minimal diff · no cosmetic changes · no refactors
+        │
+        ▼
+  🧪 rspec        ──► runs only affected spec files
+  🔍 rubocop      ──► auto-correct new files only (not existing ones)
+        │
+        ▼
+  ⏸️  PAUSE ──────► shows git diff · waits for your approval
+        │
+   you say "ok"
+        │
+        ▼
+  💾 git commit   ──► "fix: description"
+  📢 "Ready for @merger"
+```
+
+---
+
+### 🔵 Maker — `@maker 1234` or `@maker "add X to Y"`
+> For new features. Skips the speckit overhead, goes straight to implementation.
+
+```
+  Issue number OR plain description
+        │
+        ▼
+  🧠 Query Devin ──► "How does this area work? Which models/controllers?"
+        │
+        ▼
+  👁️  Read 1-2 files Devin identified  ──► confirm the pattern
+        │
+        ▼
+  ⚙️  Implement in order:
+        ├── 📦 migration  (null:, add_index on _id FKs)
+        ├── 🏛️  model      (comment methods, soft-delete if needed)
+        ├── 🎮 controller (tenant scoped, authorized, no tenant IDs in params)
+        ├── 🖼️  views      (Hotwire / Turbo if applicable)
+        └── 🧪 specs      (cross-tenant isolation test required)
+        │
+        ▼
+  🧪 rspec   ──► runs changed spec files
+  🔍 rubocop ──► auto-correct all changed files
+        │
+        ▼
+  ⏸️  PAUSE ──► shows git diff · waits for your approval
+        │
+   you say "ok"
+        │
+        ▼
+  💾 git commit  ──► "feat: description"
+  📢 "Ready for @merger"
+```
+
+---
+
+### 🟢 Merger — `@merger`
+> Always the last step. Validates the branch and generates the PR description.
+
+```
+  Current branch
+        │
+        ▼
+  🔎 git diff ──► identify all changed files
+        │
+        ▼
+  🧠 Query Devin ──► "What are the security risks for these controllers?"
+        │
+        ▼
+  🧪 rspec    ──► full spec run · stops on failure
+  🔍 rubocop  ──► auto-correct changed files
+        │
+        ▼
+  🔐 Security scan:
+        ├── Model.find without tenant scope  ──► ❌ IDOR
+        ├── Model.all / unscoped .where      ──► ❌
+        └── permit(:tenant_id/:role_id)      ──► ❌
+        │
+        ▼
+  🧱 Migration checks:
+        ├── _id columns have add_index       ──► ✅/❌
+        └── null: declared on every column   ──► ✅/❌
+        │
+        ▼
+  🛡️  Brakeman security scan
+        │
+        ▼
+  📋 Output:
+        ├── checklist ✅/❌ for every check
+        ├── verdict: READY or NEEDS FIXES (with file:line)
+        └── PR description ready to paste
+                ## What
+                ## How
+                ## Testing
+                - [ ] Specs pass
+                - [ ] Tenant isolation verified
+                - [ ] Manual test: [action]
+```
 
 ## Skills
 
