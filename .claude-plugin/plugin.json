@@ -1,0 +1,15 @@
+{
+  "name": "rails-daddy-expert",
+  "version": "1.0.0",
+  "description": "Claude Code agents and skills for full-stack Rails developers. Go from GitHub issue to PR-ready code with tests, linting, and security checks.",
+  "author": {
+    "name": "bedomax",
+    "url": "https://github.com/bedomax"
+  },
+  "homepage": "https://github.com/bedomax/rails-daddy-expert",
+  "repository": "https://github.com/bedomax/rails-daddy-expert",
+  "license": "MIT",
+  "keywords": ["rails", "ruby", "rspec", "rubocop", "hotwire", "turbo", "security", "multi-tenant"],
+  "agents": "./agents/",
+  "skills": "./skills/"
+}

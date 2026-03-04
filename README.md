@@ -41,6 +41,16 @@ Claude Code agents and skills for full-stack Rails developers. Drop into any Rai
 
 ## Installation
 
+### Option A — Claude Code plugin (recommended)
+
+```bash
+claude plugin install bedomax/rails-daddy-expert
+```
+
+Agents and skills are namespaced as `rails-daddy-expert:issuer`, `rails-daddy-expert:solve-issue`, etc.
+
+### Option B — Copy into project (classic)
+
 From the root of any Rails project:
 
 ```bash
@@ -54,10 +64,12 @@ git clone git@github.com:bedomax/rails-daddy-expert.git /tmp/rcs
 bash /tmp/rcs/install.sh
 ```
 
+This copies agents into `.claude/agents/` and skills into `.claude/skills/` of your current project.
+
 ## Agents
 
 ### 🔴 Issuer — `@issuer 1234`
-> For bug fixes and issue-driven work. Follows the full speckit cycle.
+> For bug fixes and issue-driven work. Reads issue → queries Devin → plans → implements → tests → pauses for review.
 
 ```
   GitHub Issue #1234
@@ -93,7 +105,7 @@ bash /tmp/rcs/install.sh
 ---
 
 ### 🔵 Maker — `@maker 1234` or `@maker "add X to Y"`
-> For new features. Skips the speckit overhead, goes straight to implementation.
+> For new features. Queries Devin → explores codebase → implements migration/model/controller/views/specs → tests → pauses for review.
 
 ```
   Issue number OR plain description
@@ -233,13 +245,17 @@ This grounds all code changes in your actual codebase patterns instead of genera
 
 ### 1. Install agents and skills
 
-From the root of your Rails project:
+**Plugin install (recommended):**
+
+```bash
+claude plugin install bedomax/rails-daddy-expert
+```
+
+**Or copy into project:**
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/bedomax/rails-daddy-expert/main/install.sh)
 ```
-
-This copies agents into `.claude/agents/` and skills into `.claude/skills/`.
 
 ### 2. Configure Devin MCP
 
