@@ -77,23 +77,43 @@ This grounds all code changes in your actual codebase patterns instead of genera
 ## Requirements
 
 - [Claude Code](https://claude.ai/code)
-- [Devin MCP](https://devin.ai) configured with your repo (`owner/repo`)
+- [Devin MCP](https://devin.ai) with access to your repository
 - `gh` CLI authenticated
 - Rails project with `bundle exec rspec` and `rubocop` available
 
-## Configuration
+## Setup
 
-Set your Devin repo in your project's `CLAUDE.md` or shell environment:
+### 1. Install agents and skills
+
+From the root of your Rails project:
 
 ```bash
-export DEVIN_REPO="your-org/your-repo"
+bash <(curl -s https://raw.githubusercontent.com/bedomax/rails-daddy-expert/main/install.sh)
 ```
 
-Or add it to `.claude/CLAUDE.md` at the root of your project:
+This copies agents into `.claude/agents/` and skills into `.claude/skills/`.
+
+### 2. Configure Devin MCP
+
+All agents query Devin before writing code to understand your codebase patterns. Add your repo to your project's `.claude/CLAUDE.md`:
 
 ```markdown
-# Project config
+## Devin
 DEVIN_REPO: your-org/your-repo
+```
+
+Replace `your-org/your-repo` with your actual GitHub repository (e.g. `acme/rails-app`).
+
+### 3. Add your project conventions (optional)
+
+The agents follow generic Rails best practices by default. To customize for your project, append your own rules to `.claude/CLAUDE.md`:
+
+```markdown
+## Project conventions
+- Tenant method: `current_account` (or `current_company`, `current_workspace`, etc.)
+- Auth: Pundit / CanCanCan / custom
+- Soft delete: Discard / acts_as_paranoid / none
+- Sign-in helper: `sign_in user` / `login_as user` / custom
 ```
 
 ## Rails conventions enforced
@@ -103,6 +123,6 @@ All agents enforce these patterns automatically:
 - **Tenant scoping**: all queries scoped to the current tenant — never unscoped `Model.find(params[:id])`
 - **Authorization**: authorization check on every controller action
 - **Migrations**: explicit `null:` on columns; `add_index` for every FK
-- **Minimal diffs**: only changes lines required to fix the issue — no cosmetic reformatting of surrounding code
+- **Minimal diffs**: only change lines required to fix the issue — no cosmetic reformatting of surrounding code
 - **Tests**: cross-tenant isolation test for every modified controller
 - **English**: all branch names, commit messages, and PR descriptions in English

@@ -1,6 +1,6 @@
 ---
 name: add-feat
-description: Implement a new feature without a GitHub issue. Explores existing code, plans, implements following Lexgo conventions, and runs tests.
+description: Implement a new feature without a GitHub issue. Explores existing code, plans, implements following Rails conventions, and runs tests.
 ---
 
 **INPUT**: `$ARGUMENTS` — feature description. If missing, ask and stop.

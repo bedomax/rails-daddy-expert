@@ -17,16 +17,16 @@ BASE=$(gh pr view --json baseRefName --jq '.baseRefName' 2>/dev/null || echo "ma
 4. **RuboCop**: `git diff $BASE..HEAD --name-only --diff-filter=AM | grep '\.rb$' | xargs bundle exec rubocop --auto-correct 2>&1 | tail -10`
 
 5. **Security** — scan the diff for:
-   - `Model.find(params[:id])` without `current_enterprise` scope → ❌ IDOR
+   - `Model.find(params[:id])` without tenant scope → ❌ IDOR
    - `Model.all` or unscoped `.where` in controllers → ❌
-   - `permit(:enterprise_id)` or `permit(:role_id)` → ❌
+   - `permit(:tenant_id)` or `permit(:role_id)` → ❌
 
 6. **Migrations** — for each new file in `db/migrate/`:
    - `_id` columns have matching `add_index` → ✅/❌
    - `null:` declared explicitly → ✅/❌
 
-7. **Isolation tests** — for each changed controller, its spec must contain `other_enterprise`:
-   `git diff $BASE..HEAD --name-only | grep 'app/controllers' | sed 's|app/|spec/|;s|\.rb|_spec.rb|' | xargs grep -l "other_enterprise" 2>/dev/null`
+7. **Isolation tests** — for each changed controller, its spec must contain `other_tenant`:
+   `git diff $BASE..HEAD --name-only | grep 'app/controllers' | sed 's|app/|spec/|;s|\.rb|_spec.rb|' | xargs grep -l "other_tenant" 2>/dev/null`
 
 8. **Brakeman**: `bundle exec brakeman --no-progress --quiet 2>/dev/null | head -20`
 
@@ -39,6 +39,6 @@ BASE=$(gh pr view --json baseRefName --jq '.baseRefName' 2>/dev/null || echo "ma
      ## How
      ## Testing
      - [ ] Specs pass (N examples, 0 failures)
-     - [ ] Enterprise isolation verified
+     - [ ] Tenant isolation verified
      - [ ] Manual test: [specific browser action]
      ```

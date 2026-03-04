@@ -1,6 +1,6 @@
 ---
 name: issuer
-description: Resolves a GitHub issue end-to-end. Fetches issue, queries Devin for context, runs speckit workflow, implements following Lexgo conventions, and runs tests. Use for bug fixes and issue-driven work.
+description: Resolves a GitHub issue end-to-end. Fetches issue, queries Devin for context, runs speckit workflow, implements following Rails conventions, and runs tests. Use for bug fixes and issue-driven work.
 tools: Bash, Read, Write, Edit, Glob, Grep, mcp__devin__ask_question
 model: inherit
 color: red

@@ -1,6 +1,6 @@
 ---
 name: solve-issue
-description: Go from a GitHub issue number to working code with tests. Chains speckit commands, implements following Lexgo conventions, and runs tests.
+description: Go from a GitHub issue number to working code with tests. Chains speckit commands, implements following Rails conventions, and runs tests.
 ---
 
 **INPUT**: `$ARGUMENTS` — issue number. If missing, ask and stop.

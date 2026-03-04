@@ -1,6 +1,6 @@
 ---
 name: maker
-description: Implements a new feature. Accepts either a GitHub issue number or a plain text description. Queries Devin for context, explores codebase, implements migration/model/controller/views/specs following Lexgo conventions.
+description: Implements a new feature. Accepts either a GitHub issue number or a plain text description. Queries Devin for context, explores codebase, implements migration/model/controller/views/specs following Rails conventions.
 tools: Bash, Read, Write, Edit, Glob, Grep, mcp__devin__ask_question
 model: inherit
 color: blue
