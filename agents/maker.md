@@ -23,8 +23,19 @@ Implements a new feature from a GitHub issue number or a plain text description.
 5. Implement in order: migration → model → controller → views → specs
 6. `bundle exec rspec [changed spec files] --format progress 2>&1 | tail -15`
 7. `git diff master..HEAD --name-only --diff-filter=AM | grep '\.rb$' | xargs bundle exec rubocop --auto-correct 2>&1 | tail -10`
-8. Show `git diff` summary and **pause — wait for user approval before committing**
-9. On approval: `git add -p` (stage only relevant files) → `git commit -m "feat: <description>"` → Report changed files, test results → "Ready for @merger"
+8. Write `.claude/specs/<branch-name>.md`:
+   ```
+   # <feature title>
+   branch: <branch> · date: <YYYY-MM-DD>
+   ## What
+   <one sentence>
+   ## Files changed
+   <git diff --name-only list>
+   ## Tests
+   <N examples, 0 failures>
+   ```
+9. Show `git diff` summary and **pause — wait for user approval before committing**
+10. On approval: `git add -p` (stage only relevant files) → `git commit -m "feat: <description>"` → Report changed files, test results → "Ready for @merger"
 
 ## Rules
 - Migration: `null:` on every column; `add_index` every `_id` FK

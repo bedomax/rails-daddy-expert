@@ -22,8 +22,19 @@ Resolves a GitHub issue from start to finish.
 6. `/speckit.implement` — implements each task, **do NOT commit**
 7. `bundle exec rspec $(git diff master..HEAD --name-only | grep '_spec\.rb' | tr '\n' ' ') --format progress 2>&1 | tail -15`
 8. `git diff master..HEAD --name-only --diff-filter=A | grep '\.rb$' | xargs bundle exec rubocop --auto-correct 2>&1 | tail -10` — only auto-correct **new files**, never existing ones to avoid noisy diffs
-9. Show `git diff` summary and **pause — wait for user approval before committing**
-10. On approval: `git add -p` (stage only relevant files) → `git commit -m "fix: <description>"` → Report: title, branch, tasks N/N, tests → "Ready for @merger"
+9. Write `.claude/specs/<branch-name>.md`:
+   ```
+   # <issue title>
+   issue: #<N> · branch: <branch> · date: <YYYY-MM-DD>
+   ## What
+   <one sentence>
+   ## Files changed
+   <git diff --name-only list>
+   ## Tests
+   <N examples, 0 failures>
+   ```
+10. Show `git diff` summary and **pause — wait for user approval before committing**
+11. On approval: `git add -p` (stage only relevant files) → `git commit -m "fix: <description>"` → Report: title, branch, tasks N/N, tests → "Ready for @merger"
 
 ## Rules
 - **English only**: branches, commits, PRs, reports

@@ -262,6 +262,47 @@ The agents follow generic Rails best practices by default. To customize for your
 - Sign-in helper: `sign_in user` / `login_as user` / custom
 ```
 
+## Session specs — `.claude/specs/`
+
+After each implementation, `@issuer` and `@maker` write a brief spec file to `.claude/specs/<branch-name>.md`:
+
+```markdown
+# Fix broken CSV export
+issue: #1234 · branch: fix/1234-csv-export · date: 2026-03-04
+## What
+Fix nil error when exporting empty report to CSV
+## Files changed
+app/controllers/reports_controller.rb
+spec/controllers/reports_controller_spec.rb
+## Tests
+12 examples, 0 failures
+```
+
+This gives you a searchable history of every change made by the agents — what was built, which files were touched, and whether tests passed.
+
+Add `.claude/specs/` to version control to keep the history in git.
+
+## Token footprint
+
+Agent and skill files are kept intentionally small to minimize tokens consumed per session:
+
+| File | Words |
+|------|-------|
+| `agents/issuer.md` | ~300 |
+| `agents/maker.md` | ~310 |
+| `agents/merger.md` | ~270 |
+| `skills/rails-expert.md` | ~120 |
+| `skills/add-feat.md` | ~240 |
+| `skills/solve-issue.md` | ~220 |
+| `skills/validate-branch.md` | ~280 |
+| **Total** | **~1750** |
+
+Design principles that keep token count low:
+- No boilerplate "Role Definition" or "When to Use" sections — only actionable instructions
+- Rules are written as dense bullet points, not prose
+- No duplicate content between agents — each file covers only its own workflow
+- `rails-expert.md` was trimmed from 467 → 122 words (-74%) by removing decorative sections
+
 ## Rails conventions enforced
 
 All agents enforce these patterns automatically:
