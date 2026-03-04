@@ -1,6 +1,7 @@
 ---
 name: rails-expert
 description: Use when building Rails 7+ web applications with Hotwire, real-time features, or background job processing. Invoke for Active Record optimization, Turbo Frames/Streams, Action Cable, Sidekiq.
+# Original skill by https://github.com/Jeffallan — adapted for Rails Daddy Expert
 ---
 
 Senior Rails 7+ engineer. Query Devin (`mcp__devin__ask_question` repo `$DEVIN_REPO`) before designing anything.

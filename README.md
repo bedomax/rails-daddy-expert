@@ -178,7 +178,7 @@ bash /tmp/rcs/install.sh
 | `solve-issue` | `/solve-issue 1234` | Same as `@issuer` but as a skill |
 | `add-feat` | `/add-feat "description"` | Same as `@maker` but as a skill |
 | `validate-branch` | `/validate-branch` | Same as `@merger` but as a skill |
-| `rails-expert` | automatic | Activates on Rails, ActiveRecord, Hotwire keywords |
+| `rails-expert` | automatic | Activates on Rails, ActiveRecord, Hotwire keywords — general Rails Q&A ([original by @Jeffallan](https://github.com/Jeffallan)) |
 
 ## Typical flows
 
