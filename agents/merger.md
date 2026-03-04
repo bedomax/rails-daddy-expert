@@ -17,7 +17,7 @@ BASE=$(gh pr view --json baseRefName --jq '.baseRefName' 2>/dev/null || echo "ma
 ```
 
 1. `git diff $BASE..HEAD --name-only` — identify changed files
-2. `mcp__devin__ask_question` repo `Lexgo-cl/rails-backend` — "What are the security and data isolation risks when modifying [changed controllers/models]?" — use the answer to focus the security check
+2. `mcp__devin__ask_question` repo `$DEVIN_REPO` — "What are the security and data isolation risks when modifying [changed controllers/models]?" — use the answer to focus the security check
 3. `bundle exec rspec $(git diff $BASE..HEAD --name-only | grep '_spec\.rb' | tr '\n' ' ') --format progress 2>&1 | tail -15` — stop and fix if any failures
 4. `git diff $BASE..HEAD --name-only --diff-filter=AM | grep '\.rb$' | xargs bundle exec rubocop --auto-correct 2>&1 | tail -10`
 5. Scan the diff for: `Model.find(params[:id])` without scope → ❌ IDOR; `Model.all` without scope → ❌; `permit(:enterprise_id/:role_id)` → ❌

@@ -17,7 +17,7 @@ Implements a new feature from a GitHub issue number or a plain text description.
 1. **Resolve input**:
    - If input is a number → `gh issue view $INPUT --json title,body,labels,comments` and use issue body as the feature spec
    - If input is text → use it directly as the feature description
-2. `mcp__devin__ask_question` repo `Lexgo-cl/rails-backend` — "How does [feature area] work? Which models, controllers and files are involved?" — use the answer to understand patterns before writing any code
+2. `mcp__devin__ask_question` repo `$DEVIN_REPO` — "How does [feature area] work? Which models, controllers and files are involved?" — use the answer to understand patterns before writing any code
 3. Read 1-2 of the files Devin identified to confirm the pattern
 4. If scope is still ambiguous, ask at most 1 question before proceeding
 5. Implement in order: migration → model → controller → views → specs
@@ -26,21 +26,9 @@ Implements a new feature from a GitHub issue number or a plain text description.
 8. Show `git diff` summary and **pause — wait for user approval before committing**
 9. On approval: `git add -p` (stage only relevant files) → `git commit -m "feat: <description>"` → Report changed files, test results → "Ready for @merger"
 
-## Lexgo Rules
+## Rails Rules
 - **Migration**: explicit `null:` on every column; `add_index` for every `_id` FK
-- **Model**: comment every new method; use `acts_as_paranoid` if record is deletable
-- **Controller**: always `current_enterprise.models.find(...)`; `load_and_authorize_resource`; never permit `enterprise_id/role_id` in strong params
-- **Specs boilerplate**:
-  ```ruby
-  before do
-    request.host = 'localhost'
-    create(:admin_role) unless Role.exists?(1)
-    create(:account_manager) unless Role.exists?(2)
-    create(:client) unless Role.exists?(5)
-    user.update!(last_sign_in_at: 2.minutes.ago)
-    sign_in_with_multi_email_support user
-    session[:enterprise_id] = enterprise.id
-    allow(controller).to receive(:layout_variables)
-  end
-  ```
-- Every controller spec needs at least one cross-enterprise isolation test
+- **Model**: comment every new method; use soft-delete (e.g. `acts_as_paranoid`) if record is deletable
+- **Controller**: always scope queries to current tenant (e.g. `current_account.models.find(...)`); use authorization (`load_and_authorize_resource`); never permit tenant/role IDs in strong params
+- **Specs boilerplate**: set `request.host`, sign in with your project helper, stub layout helpers
+- Every controller spec needs at least one cross-tenant isolation test

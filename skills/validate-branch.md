@@ -10,7 +10,7 @@ BASE=$(gh pr view --json baseRefName --jq '.baseRefName' 2>/dev/null || echo "ma
 ```
 
 1. **Changed files**: `git diff $BASE..HEAD --name-only`
-2. **Query Devin** with `mcp__devin__ask_question` on repo `Lexgo-cl/rails-backend` — ask: "What are the security and data isolation risks when modifying [changed controllers/models]?" Use the answer to focus the security check in step 5.
+2. **Query Devin** with `mcp__devin__ask_question` on repo `$DEVIN_REPO` — ask: "What are the security and data isolation risks when modifying [changed controllers/models]?" Use the answer to focus the security check in step 5.
 3. **Specs**: `bundle exec rspec $(git diff $BASE..HEAD --name-only | grep '_spec\.rb' | tr '\n' ' ') --format progress 2>&1 | tail -15`
    — stop and fix failures before continuing
 
