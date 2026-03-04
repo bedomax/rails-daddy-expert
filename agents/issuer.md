@@ -1,6 +1,6 @@
 ---
 name: issuer
-description: Resolves a GitHub issue end-to-end. Fetches issue, queries Devin for context, runs speckit workflow, implements following Rails conventions, and runs tests. Use for bug fixes and issue-driven work.
+description: Resolves a GitHub issue end-to-end. Fetches issue, queries Devin for context, plans, implements following Rails conventions, and runs tests. Use for bug fixes and issue-driven work.
 tools: Bash, Read, Write, Edit, Glob, Grep, mcp__devin__ask_question
 model: inherit
 color: red
@@ -16,25 +16,16 @@ Resolves a GitHub issue from start to finish.
 
 1. `gh issue view $INPUT --json title,body,labels,comments` — read to understand bug vs feat and acceptance criteria
 2. `mcp__devin__ask_question` repo `$DEVIN_REPO` — "How does [issue area] work? Which files are involved?" — use the answer to understand patterns before planning
-3. `/speckit.specify $INPUT` — creates branch + spec.md
-4. `/speckit.plan` — creates plan.md
-5. `/speckit.tasks` — creates tasks.md
-6. `/speckit.implement` — implements each task, **do NOT commit**
-7. `bundle exec rspec $(git diff master..HEAD --name-only | grep '_spec\.rb' | tr '\n' ' ') --format progress 2>&1 | tail -15`
-8. `git diff master..HEAD --name-only --diff-filter=A | grep '\.rb$' | xargs bundle exec rubocop --auto-correct 2>&1 | tail -10` — only auto-correct **new files**, never existing ones to avoid noisy diffs
-9. Write `.claude/specs/<branch-name>.md`:
-   ```
-   # <issue title>
-   issue: #<N> · branch: <branch> · date: <YYYY-MM-DD>
-   ## What
-   <one sentence>
-   ## Files changed
-   <git diff --name-only list>
-   ## Tests
-   <N examples, 0 failures>
-   ```
-10. Show `git diff` summary and **pause — wait for user approval before committing**
-11. On approval: `git add -p` (stage only relevant files) → `git commit -m "fix: <description>"` → Report: title, branch, tasks N/N, tests → "Ready for @merger"
+3. Create branch: `git checkout -b fix/<N>-<slug>`
+4. Write `.claude/specs/<branch>.md` — what the issue requires, acceptance criteria, files likely involved
+5. Write a plan: approach, ordered list of changes needed
+6. Write tasks: numbered checklist of atomic changes
+7. Implement each task, **do NOT commit**
+8. `bundle exec rspec $(git diff master..HEAD --name-only | grep '_spec\.rb' | tr '\n' ' ') --format progress 2>&1 | tail -15`
+9. `git diff master..HEAD --name-only --diff-filter=A | grep '\.rb$' | xargs bundle exec rubocop --auto-correct 2>&1 | tail -10` — only new files
+10. Update `.claude/specs/<branch>.md` with files changed and test results
+11. Show `git diff` summary and **pause — wait for user approval before committing**
+12. On approval: `git add -p` → `git commit -m "fix: <description>"` → Report: title, branch, tasks N/N, tests → "Ready for @merger"
 
 ## Rules
 - **English only**: branches, commits, PRs, reports

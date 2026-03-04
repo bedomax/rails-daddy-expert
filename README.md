@@ -227,6 +227,8 @@ This grounds all code changes in your actual codebase patterns instead of genera
 - `gh` CLI authenticated
 - Rails project with `bundle exec rspec` and `rubocop` available
 
+**No additional Claude plugins or skills required.** Rails Daddy Expert is self-contained — it does not depend on speckit, GSD, or any other Claude marketplace package.
+
 ## Setup
 
 ### 1. Install agents and skills
