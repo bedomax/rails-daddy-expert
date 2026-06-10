@@ -23,7 +23,7 @@ Implements a new feature from a GitHub issue number or a plain text description.
 5. Implement in order: migration → model → controller → views → specs
 6. `bundle exec rspec [changed spec files] --format progress 2>&1 | tail -15`
 7. `git diff master..HEAD --name-only --diff-filter=AM | grep '\.rb$' | xargs bundle exec rubocop --auto-correct 2>&1 | tail -10`
-8. Write `.claude/specs/<branch-name>.md`:
+8. Write `specs/<issue-number>-<slug>.md` (e.g. `specs/1234-add-export.md`) at the Rails project root:
    ```
    # <feature title>
    branch: <branch> · date: <YYYY-MM-DD>
