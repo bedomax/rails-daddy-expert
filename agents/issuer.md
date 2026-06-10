@@ -17,13 +17,13 @@ Resolves a GitHub issue from start to finish.
 1. `gh issue view $INPUT --json title,body,labels,comments` — read to understand bug vs feat and acceptance criteria
 2. `mcp__devin__ask_question` repo `$DEVIN_REPO` — "How does [issue area] work? Which files are involved?" — use the answer to understand patterns before planning
 3. Create branch: `git checkout -b fix/<N>-<slug>`
-4. Write `specs/<issue-number>-<slug>.md` (e.g. `specs/1234-fix-menu.md`) at the Rails project root — what the issue requires, acceptance criteria, files likely involved
+4. Create folder `specs/<issue-number>-<slug>/` (e.g. `specs/1234-fix-menu/`) at the Rails project root and write `specs/<issue-number>-<slug>/spec.md` — what the issue requires, acceptance criteria, files likely involved
 5. Write a plan: approach, ordered list of changes needed
 6. Write tasks: numbered checklist of atomic changes
 7. Implement each task, **do NOT commit**
 8. `bundle exec rspec $(git diff master..HEAD --name-only | grep '_spec\.rb' | tr '\n' ' ') --format progress 2>&1 | tail -15`
 9. `git diff master..HEAD --name-only --diff-filter=A | grep '\.rb$' | xargs bundle exec rubocop --auto-correct 2>&1 | tail -10` — only new files
-10. Update `specs/<issue-number>-<slug>.md` with files changed and test results
+10. Update `specs/<issue-number>-<slug>/spec.md` with files changed and test results
 11. Show `git diff` summary and **pause — wait for user approval before committing**
 12. On approval: `git add -p` → `git commit -m "fix: <description>"` → Report: title, branch, tasks N/N, tests → "Ready for @merger"
 
