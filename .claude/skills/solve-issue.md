@@ -5,18 +5,21 @@ description: Go from a GitHub issue number to working code with tests. Plans, im
 
 **INPUT**: `$ARGUMENTS` — issue number. If missing, ask and stop.
 
+**Spec path**: `specs/<N>-<slug>/spec.md` — always. Example: `specs/1234-fix-menu/spec.md`
+
 ## Steps
 
-1. `gh issue view $ARGUMENTS --json title,body,labels,comments` — read to understand bug vs feat and acceptance criteria
-2. **Query Devin** with `mcp__devin__ask_question` on repo `$DEVIN_REPO` — ask: "How does [affected area from issue title] work? Which files are involved?" Use the answer to understand existing patterns before planning.
-3. Create branch: `git checkout -b fix/<N>-<slug>`
-4. Write `.claude/specs/<branch>.md` — acceptance criteria, files likely involved
-5. Plan: ordered list of changes needed
-6. Tasks: numbered checklist of atomic changes
+1. `gh issue view $N --json title,body,labels,comments` — bug vs feat, acceptance criteria
+2. Slug: kebab-case from issue title, max 4 words
+3. **Query Devin** with `mcp__devin__ask_question` on repo `$DEVIN_REPO` — "How does [affected area] work? Which files are involved?"
+4. `git checkout -b <N>-<slug>`
+5. Create `specs/<N>-<slug>/spec.md` — **draft** per `specs/_template.md`: What, Acceptance, Context
+6. Plan + tasks inline under `## Plan` and `## Tasks`
 7. Implement each task
 8. `bundle exec rspec $(git diff master..HEAD --name-only | grep '_spec\.rb' | tr '\n' ' ') --format progress 2>&1 | tail -15`
 9. `git diff master..HEAD --name-only --diff-filter=AM | grep '\.rb$' | xargs bundle exec rubocop --auto-correct 2>&1 | tail -10`
-10. Report: issue title, branch, tasks done N/N, test results → "Ready for /validate-branch"
+10. **Finalize** `specs/<N>-<slug>/spec.md` — Decisions, Implemented, Tests, Manual QA; remove Plan/Tasks
+11. Report: issue title, branch, tasks N/N, test results → "Ready for /validate-branch"
 
 ## Rails rules during implementation
 - Queries: always scope to current tenant (e.g. `current_account.models.find(params[:id])`), never `Model.find(...)`

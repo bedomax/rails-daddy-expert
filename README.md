@@ -18,9 +18,7 @@ Claude Code agents and skills for full-stack Rails developers. Drop into any Rai
 │     ▼                                                                │
 │  🤖 @issuer 1234  ──── queries Devin ────►  📚 Knows your codebase  │
 │     │                                                                │
-│     ├── 📄 spec.md   (what to build)                                 │
-│     ├── 🗺️  plan.md   (how to build it)                              │
-│     ├── ✅ tasks.md  (step by step)                                  │
+│     ├── 📄 specs/<N>-<slug>/spec.md  (what to build)               │
 │     ├── ⚙️  implements (minimal diff, no noise)                      │
 │     ├── 🧪 rspec     (runs your tests)                               │
 │     └── ⏸️  PAUSE → shows git diff → waits for YOU                  │
@@ -81,9 +79,7 @@ This copies agents into `.claude/agents/` and skills into `.claude/skills/` of y
   🧠 Query Devin ──► "How does this area work? Which files?"
         │            (grounded in YOUR codebase, not generic Rails)
         ▼
-  📄 spec.md     ──► what needs to be built / fixed
-  🗺️  plan.md     ──► approach and file changes
-  ✅ tasks.md    ──► step-by-step checklist
+  📄 specs/<N>-<slug>/spec.md  ──► what needs to be built / fixed (Plan + Tasks inline during work)
         │
         ▼
   ⚙️  Implement   ──► minimal diff · no cosmetic changes · no refactors
@@ -280,25 +276,24 @@ The agents follow generic Rails best practices by default. To customize for your
 - Sign-in helper: `sign_in user` / `login_as user` / custom
 ```
 
-## Session specs — `.claude/specs/`
+## Session specs — `specs/<N>-<slug>/spec.md`
 
-After each implementation, `@issuer` and `@maker` write a brief spec file to `.claude/specs/<branch-name>.md`:
+All agents and skills write to `specs/<issue-number>-<slug>/spec.md` at the Rails project root (e.g. `specs/1234-add-export/spec.md`). Slug: kebab-case from issue title, max 4 words.
+
+After implementation, the spec contains:
 
 ```markdown
-# Fix broken CSV export
-issue: #1234 · branch: fix/1234-csv-export · date: 2026-03-04
+# Add CSV export
+issue: #1234 · branch: 1234-add-export · date: 2026-06-16
 ## What
-Fix nil error when exporting empty report to CSV
-## Files changed
-app/controllers/reports_controller.rb
-spec/controllers/reports_controller_spec.rb
+Users can export report data as CSV
+## Implemented
+- `app/controllers/reports_controller.rb` — export action
 ## Tests
-12 examples, 0 failures
+8 examples, 0 failures · isolation: ✅
 ```
 
-This gives you a searchable history of every change made by the agents — what was built, which files were touched, and whether tests passed.
-
-Add `.claude/specs/` to version control to keep the history in git.
+Template: `specs/_template.md`. Add `specs/` to version control to keep history in git.
 
 ## Token footprint
 
